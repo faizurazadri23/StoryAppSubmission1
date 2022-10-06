@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="must_not_empty">Tidak boleh kosong</string>
+    <string name="type_email_not_valid">Format email tidak valid</string>
+    <string name="input_password_description">Masukkan kata sandi</string>
+    <string name="more_than_six_character">Kata sandi wajib lebih dari 6</string>
+    <string name="silahkan_masuk">Silahkan Masuk</string>
+    <string name="daftar">Daftar</string>
+</resources>
