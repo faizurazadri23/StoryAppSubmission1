@@ -12,11 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StoryAppSubmission1">
         <activity
+            android:name=".ui.DetailStoriesActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.AddStoryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.ListStoryActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.RegisterActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ui.LoginActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true" />

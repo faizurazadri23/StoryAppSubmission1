@@ -3,7 +3,20 @@
     <string name="must_not_empty">Tidak boleh kosong</string>
     <string name="type_email_not_valid">Format email tidak valid</string>
     <string name="input_password_description">Masukkan kata sandi</string>
+    <string name="input_name_description">Nama lengkap harus diisi</string>
     <string name="more_than_six_character">Kata sandi wajib lebih dari 6</string>
     <string name="silahkan_masuk">Silahkan Masuk</string>
     <string name="daftar">Daftar</string>
+    <string name="buat_akun_baru">Buat akun baru</string>
+    <string name="masuk">Masuk</string>
+    <string name="belum_punya_akun">Belum punya akun?</string>
+    <string name="input_email_description">Masukkan alamat email</string>
+    <string name="keluar">Keluar</string>
+    <string name="tambah_story">Tambah Story</string>
+    <string name="gambar_story">Gambar story</string>
+    <string name="nama_pengguna">Nama Pengguna</string>
+    <string name="deskripsi">Deskripsi</string>
+    <string name="data_tidak_tersedia">Data tidak tersedia</string>
+    <string name="failed_login">Permintaan Masuk Gagal</string>
+    <string name="login_success">Berhasil Masuk</string>
 </resources>

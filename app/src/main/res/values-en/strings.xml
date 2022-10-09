@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">StoryApp</string>
+    <string name="must_not_empty">Can not be empty</string>
+    <string name="type_email_not_valid">Invalid email format</string>
+    <string name="input_password_description">Enter password</string>
+    <string name="input_name_description">Full name is required</string>
+    <string name="more_than_six_character">Password must be more than 6</string>
+    <string name="silahkan_masuk">Please come in</string>
+    <string name="daftar">Register</string>
+    <string name="buat_akun_baru">Create a new account</string>
+    <string name="masuk">SigIn</string>
+    <string name="belum_punya_akun">Dont have an account yet?</string>
+    <string name="input_email_description">Enter email address</string>
+    <string name="keluar">Exit</string>
+    <string name="tambah_story">Add Story</string>
+    <string name="gambar_story">Story Image</string>
+    <string name="nama_pengguna">Username</string>
+    <string name="deskripsi">Description</string>
+    <string name="data_tidak_tersedia">Data not available</string>
+    <string name="failed_login">Login Request Failed</string>
+    <string name="login_success">Login Successfully</string>
+</resources>

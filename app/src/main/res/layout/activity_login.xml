@@ -3,15 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.LoginActivity">
 
     <ImageView
         android:id="@+id/img_user"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:src="@drawable/user" />
+        android:src="@drawable/logo_storyapp" />
 
     <TextView
         android:id="@+id/title_login"
@@ -59,12 +60,22 @@
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:visibility="gone" />
+
 
     <com.faizurazadri.storyappsubmission1.custom_view.MyButton
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_password"
+        android:layout_below="@+id/loading"
+        android:text="@string/masuk"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp" />
@@ -76,7 +87,7 @@
         android:layout_below="@+id/btn_login"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:text="Belum punya akun? "
+        android:text="@string/belum_punya_akun"
         android:textSize="14sp" />
 
     <TextView

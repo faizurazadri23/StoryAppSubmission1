@@ -5,14 +5,12 @@ import android.graphics.Canvas
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
-import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.widget.doAfterTextChanged
 import com.faizurazadri.storyappsubmission1.R
 
-class MyEditTextPassword : AppCompatEditText {
+class MyEditTextName : AppCompatEditText {
 
     constructor(context: Context) : super(context) {
         init()
@@ -30,23 +28,12 @@ class MyEditTextPassword : AppCompatEditText {
         init()
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-
-        hint = context.getString(R.string.input_password_description);
-
-        textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-
-        textSize = 14f
-    }
-
     private fun init() {
-        inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
-        transformationMethod = PasswordTransformationMethod()
+        inputType = InputType.TYPE_TEXT_VARIATION_NORMAL
 
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+                error = null
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -55,17 +42,18 @@ class MyEditTextPassword : AppCompatEditText {
 
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.isEmpty() == true) {
-                    error = context.getString(R.string.input_password_description)
-                } else {
-                    if (p0?.isEmpty() == true) {
-                        error = context.getString(R.string.must_not_empty)
-                    } else {
-                        if ((p0?.length ?: 0) < 6) {
-                            error = context.getString(R.string.more_than_six_character)
-                        }
-                    }
+                    error = context.getString(R.string.input_name_description)
                 }
             }
         })
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+
+        hint = "Masukkan nama lengkap"
+        textSize = 14f
+
+        textAlignment = View.TEXT_ALIGNMENT_VIEW_START
     }
 }

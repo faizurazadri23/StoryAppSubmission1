@@ -31,7 +31,6 @@ class MyButton : AppCompatButton{
         setTextColor(txtColor)
         textSize = 12f
         gravity = Gravity.CENTER
-        text = if (isEnabled) "Masuk" else "Email dan Kata Sandi belum diisi"
     }
 
     private fun init(){
