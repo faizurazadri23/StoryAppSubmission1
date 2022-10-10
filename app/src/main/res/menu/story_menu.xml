@@ -9,7 +9,7 @@
             app:showAsAction="never"/>
 
         <item
-            android:id="@+id/exit_application"
+            android:id="@+id/action_logout"
             android:title="@string/keluar"
             app:showAsAction="never"/>
     </group>

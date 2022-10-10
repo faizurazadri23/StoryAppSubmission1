@@ -21,4 +21,7 @@
     <string name="data_tidak_tersedia">Data not available</string>
     <string name="failed_login">Login Request Failed</string>
     <string name="login_success">Login Successfully</string>
+    <string name="kamera">Camera</string>
+    <string name="galeri">Gallery</string>
+    <string name="description_alert_logout">Are you sure you want to go exit?</string>
 </resources>
