@@ -10,8 +10,8 @@
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_centerHorizontal="true"
-        android:contentDescription="@string/gambar_story"
         android:layout_marginTop="10dp"
+        android:contentDescription="@string/gambar_story"
         android:src="@drawable/image" />
 
     <RelativeLayout
@@ -58,11 +58,20 @@
             android:inputType="textMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
 
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_description"
+        android:layout_centerHorizontal="true" />
+
     <com.faizurazadri.storyappsubmission1.custom_view.MyButton
         android:id="@+id/button_add"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@+id/layout_description"
+        android:layout_below="@+id/loading"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"

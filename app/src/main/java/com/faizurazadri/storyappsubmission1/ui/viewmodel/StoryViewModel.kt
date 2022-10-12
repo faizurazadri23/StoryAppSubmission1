@@ -5,13 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.faizurazadri.storyappsubmission1.api.ApiConfig
-import com.faizurazadri.storyappsubmission1.data.source.response.CreateAccountResponse
-import com.faizurazadri.storyappsubmission1.data.source.response.GetStoriesResponse
-import com.faizurazadri.storyappsubmission1.data.source.response.ListStoryItem
-import com.faizurazadri.storyappsubmission1.data.source.response.LoginResponse
+import com.faizurazadri.storyappsubmission1.data.source.response.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.Part
 
 class StoryViewModel : ViewModel() {
 
@@ -26,6 +26,9 @@ class StoryViewModel : ViewModel() {
 
     private val _storiesList = MutableLiveData<List<ListStoryItem>>()
     val storyList: LiveData<List<ListStoryItem>> = _storiesList;
+
+    private val _message = MutableLiveData<String>()
+    val message: LiveData<String> = _message;
 
     companion object {
         private const val TAG = "StoryViewModel"
@@ -111,6 +114,37 @@ class StoryViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<GetStoriesResponse>, t: Throwable) {
+                _isLoading.value = false
+                Log.e(TAG, "onFailure: ${t.message.toString()}")
+            }
+        })
+    }
+
+    fun addNewStories(token: String, imageMultipart: MultipartBody.Part, description : RequestBody) {
+        _isLoading.value = true;
+
+        val client = ApiConfig.getApiService().addNewStory("Bearer $token",imageMultipart, description)
+        client.enqueue(object : Callback<AddNewStoryResponse> {
+            override fun onResponse(
+                call: Call<AddNewStoryResponse>,
+                response: Response<AddNewStoryResponse>
+            ) {
+                _isLoading.value = false
+
+                if (response.isSuccessful) {
+                    _error.value = false
+                    val responseBody = response.body()
+                    if (responseBody!=null && !responseBody.error!!){
+                        _message.value = responseBody.message
+                    }
+
+                } else {
+                    _error.value = true
+                    Log.e(TAG, "onFailure : ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<AddNewStoryResponse>, t: Throwable) {
                 _isLoading.value = false
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }

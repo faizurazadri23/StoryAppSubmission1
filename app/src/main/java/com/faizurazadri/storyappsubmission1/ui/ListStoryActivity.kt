@@ -19,7 +19,8 @@ import com.google.gson.Gson
 
 class ListStoryActivity : AppCompatActivity() {
 
-    private lateinit var listStoryBinding: ActivityListStoryBinding;
+    private lateinit var listStoryBinding: ActivityListStoryBinding
+    private lateinit var userData: LoginResult
     private val storyViewModel: StoryViewModel by viewModels()
     private val adapterStory = AdapterStory()
 
@@ -35,12 +36,12 @@ class ListStoryActivity : AppCompatActivity() {
         val sharedPreference = getSharedPreferences("auth", Context.MODE_PRIVATE)
 
 
-        val userData =
+        userData =
             Gson().fromJson(sharedPreference.getString("user", ""), LoginResult::class.java)
 
-        userData.token?.let { storyViewModel.getAllStories(it) }
 
-        getListStories()
+
+
     }
 
     private fun getListStories() {
@@ -109,5 +110,11 @@ class ListStoryActivity : AppCompatActivity() {
             startActivity(it)
             finish()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        userData.token?.let { storyViewModel.getAllStories(it) }
+        getListStories()
     }
 }

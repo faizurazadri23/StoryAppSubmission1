@@ -24,4 +24,5 @@
     <string name="kamera">Camera</string>
     <string name="galeri">Gallery</string>
     <string name="description_alert_logout">Are you sure you want to go exit?</string>
+    <string name="empty_image">Please enter the image file first</string>
 </resources>

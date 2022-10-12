@@ -55,8 +55,8 @@ class LoginActivity : AppCompatActivity() {
             Intent(this, ListStoryActivity::class.java).also {
                 it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(it)
+                finish()
             }
-            Toast.makeText(this, applicationContext.getString(R.string.login_success) + it.message, Toast.LENGTH_LONG).show()
         }
 
         loginBinding.registerAccount.setOnClickListener {
@@ -77,7 +77,11 @@ class LoginActivity : AppCompatActivity() {
         val sharedPreference = getSharedPreferences("auth", Context.MODE_PRIVATE)
 
         if (sharedPreference.contains("user")) {
-            Intent(this, ListStoryActivity::class.java).also { startActivity(it) }
+            Intent(this, ListStoryActivity::class.java).also {
+                it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(it)
+                finish()
+            }
         }
     }
 

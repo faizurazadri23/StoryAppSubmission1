@@ -22,4 +22,5 @@
     <string name="kamera">Kamera</string>
     <string name="galeri">Galeri</string>
     <string name="description_alert_logout">Yakin ingin keluar?</string>
+    <string name="empty_image">Silahkan masukkan berkas gambar terlebih dahulu</string>
 </resources>
