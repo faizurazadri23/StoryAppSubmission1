@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.LoginActivity">
 
     <ImageView
@@ -11,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
+        android:contentDescription="@string/logo_aplikasi"
         android:layout_marginTop="20dp"
         android:src="@drawable/logo_storyapp" />
 
@@ -97,7 +97,7 @@
         android:layout_below="@+id/btn_login"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/txt_blum_punyakun"
+        android:layout_toEndOf="@+id/txt_blum_punyakun"
         android:text="@string/daftar"
         android:textColor="@color/teal_200"
         android:textSize="14sp"

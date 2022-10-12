@@ -19,9 +19,9 @@
     <string name="deskripsi">Deskripsi</string>
     <string name="data_tidak_tersedia">Data tidak tersedia</string>
     <string name="failed_login">Permintaan Masuk Gagal</string>
-    <string name="login_success">Berhasil Masuk</string>
     <string name="kamera">Kamera</string>
     <string name="galeri">Galeri</string>
     <string name="description_alert_logout">Yakin ingin keluar?</string>
     <string name="empty_image">Silahkan masukkan berkas gambar terlebih dahulu</string>
+    <string name="logo_aplikasi">Logo Aplikasi</string>
 </resources>

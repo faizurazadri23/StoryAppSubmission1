@@ -71,6 +71,7 @@ class LoginActivity : AppCompatActivity() {
         var editor = sharedPreference.edit()
         editor.putString("user", jsonString)
         editor.commit()
+        editor.apply()
     }
 
     private fun checkLogin() {
