@@ -8,6 +8,7 @@
     <ImageView
         android:id="@+id/iv_detail_photo"
         android:layout_width="match_parent"
+        android:transitionName="story_image"
         android:layout_height="180dp"
         android:contentDescription="@string/gambar_story"
         android:scaleType="fitXY"
@@ -21,7 +22,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp">
 
-        <TableRow>
+        <TableRow
+            android:transitionName="username">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,7 +43,9 @@
 
         </TableRow>
 
-        <TableRow android:layout_marginTop="7dp">
+        <TableRow
+            android:transitionName="description"
+            android:layout_marginTop="7dp">
 
             <TextView
                 android:layout_width="wrap_content"

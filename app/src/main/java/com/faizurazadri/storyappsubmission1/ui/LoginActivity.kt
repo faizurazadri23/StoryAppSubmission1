@@ -19,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginBinding: ActivityLoginBinding
     private val storyViewModel: StoryViewModel by viewModels()
+    private var gson =  Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,12 +66,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun saveUser(loginResult: LoginResult) {
-        var gson = Gson()
+        gson = Gson()
         var jsonString = gson.toJson(loginResult)
         val sharedPreference = getSharedPreferences("auth", Context.MODE_PRIVATE)
         var editor = sharedPreference.edit()
         editor.putString("user", jsonString)
-        editor.commit()
         editor.apply()
     }
 

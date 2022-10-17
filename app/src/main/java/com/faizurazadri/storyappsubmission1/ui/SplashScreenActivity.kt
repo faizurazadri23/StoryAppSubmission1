@@ -11,8 +11,6 @@ import com.faizurazadri.storyappsubmission1.R
 
 class SplashScreenActivity : AppCompatActivity() {
 
-    private val SPLASH_TIME_OUT: Long = 3000;
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
@@ -37,4 +35,9 @@ class SplashScreenActivity : AppCompatActivity() {
         }, SPLASH_TIME_OUT);
 
     }
+
+    companion object {
+        private const val SPLASH_TIME_OUT: Long = 3000
+    }
+
 }

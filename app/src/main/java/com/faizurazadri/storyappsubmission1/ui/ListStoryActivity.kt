@@ -40,8 +40,6 @@ class ListStoryActivity : AppCompatActivity() {
             Gson().fromJson(sharedPreference.getString("user", ""), LoginResult::class.java)
 
 
-
-
     }
 
     private fun getListStories() {
@@ -49,16 +47,18 @@ class ListStoryActivity : AppCompatActivity() {
         storyViewModel.storyList.observe(this) {
             listStoryBinding.emptyData.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
 
-            adapterStory.setStories(it)
-            adapterStory.notifyDataSetChanged()
+            adapterStory.differ.submitList(it)
+
+            listStoryBinding.apply {
+                itemStory.apply {
+                    layoutManager = LinearLayoutManager(this@ListStoryActivity)
+                    adapter = adapterStory
+                }
+            }
+
             listStoryBinding.loading.visibility = View.GONE
         }
 
-        with(listStoryBinding.itemStory) {
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = adapterStory
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

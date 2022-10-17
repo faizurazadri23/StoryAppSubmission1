@@ -40,11 +40,6 @@ class AddStoryActivity : AppCompatActivity() {
 
     private val storyViewModel: StoryViewModel by viewModels()
 
-    companion object {
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        private const val REQUEST_CODE_PERMISSIONS = 10
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -181,7 +176,7 @@ class AddStoryActivity : AppCompatActivity() {
     ) {
         if (it.resultCode == RESULT_OK) {
             val myFile = File(currentPhotoPath)
-            val result = BitmapFactory.decodeFile(myFile.path);
+            val result = BitmapFactory.decodeFile(myFile.path)
 
             getFile = myFile
             binding.ivItemPhoto.setImageBitmap(result)
@@ -196,5 +191,10 @@ class AddStoryActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    companion object {
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private const val REQUEST_CODE_PERMISSIONS = 10
     }
 }
