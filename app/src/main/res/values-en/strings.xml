@@ -25,4 +25,8 @@
     <string name="description_alert_logout">Are you sure you want to go exit?</string>
     <string name="empty_image">Please enter the image file first</string>
     <string name="logo_aplikasi">Logo Aplikasi</string>
+    <string name="peta">Maps</string>
+    <string name="title_activity_maps">Maps</string>
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
 </resources>

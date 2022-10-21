@@ -24,4 +24,8 @@
     <string name="description_alert_logout">Yakin ingin keluar?</string>
     <string name="empty_image">Silahkan masukkan berkas gambar terlebih dahulu</string>
     <string name="logo_aplikasi">Logo Aplikasi</string>
+    <string name="title_activity_maps">Peta</string>
+    <string name="peta">Peta</string>
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satelit</string>
 </resources>

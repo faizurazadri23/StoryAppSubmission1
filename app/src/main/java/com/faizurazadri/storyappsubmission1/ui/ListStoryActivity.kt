@@ -77,6 +77,11 @@ class ListStoryActivity : AppCompatActivity() {
                 Intent(this, AddStoryActivity::class.java).also { startActivity(it) }
                 true
             }
+
+            R.id.action_map -> {
+                Intent(this, MapsActivity::class.java).also { startActivity(it) }
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
