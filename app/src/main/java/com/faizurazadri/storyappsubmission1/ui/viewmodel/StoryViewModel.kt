@@ -5,13 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.faizurazadri.storyappsubmission1.api.ApiConfig
+import com.faizurazadri.storyappsubmission1.data.source.model.ListStoryItem
 import com.faizurazadri.storyappsubmission1.data.source.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Part
 
 class StoryViewModel : ViewModel() {
 
@@ -120,10 +120,11 @@ class StoryViewModel : ViewModel() {
         })
     }
 
-    fun addNewStories(token: String, imageMultipart: MultipartBody.Part, description : RequestBody) {
+    fun addNewStories(token: String, imageMultipart: MultipartBody.Part, description: RequestBody) {
         _isLoading.value = true;
 
-        val client = ApiConfig.getApiService().addNewStory("Bearer $token",imageMultipart, description)
+        val client =
+            ApiConfig.getApiService().addNewStory("Bearer $token", imageMultipart, description)
         client.enqueue(object : Callback<AddNewStoryResponse> {
             override fun onResponse(
                 call: Call<AddNewStoryResponse>,
@@ -134,7 +135,7 @@ class StoryViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     _error.value = false
                     val responseBody = response.body()
-                    if (responseBody!=null && !responseBody.error!!){
+                    if (responseBody != null && !responseBody.error!!) {
                         _message.value = responseBody.message
                     }
 
@@ -145,6 +146,33 @@ class StoryViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<AddNewStoryResponse>, t: Throwable) {
+                _isLoading.value = false
+                Log.e(TAG, "onFailure: ${t.message.toString()}")
+            }
+        })
+    }
+
+    fun getStoriesLocation(token: String, id: Int) {
+        _isLoading.value = true;
+
+        val client = ApiConfig.getApiService().getStoriesLocation("Bearer $token", id)
+        client.enqueue(object : Callback<GetStoriesLocation> {
+            override fun onResponse(
+                call: Call<GetStoriesLocation>,
+                response: Response<GetStoriesLocation>
+            ) {
+                _isLoading.value = false
+
+                if (response.isSuccessful) {
+                    _error.value = false
+                    _storiesList.value = response.body()?.listStory as List<ListStoryItem>?
+                } else {
+                    _error.value = true
+                    Log.e(TAG, "onFailure : ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<GetStoriesLocation>, t: Throwable) {
                 _isLoading.value = false
                 Log.e(TAG, "onFailure: ${t.message.toString()}")
             }

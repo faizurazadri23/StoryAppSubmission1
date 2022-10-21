@@ -3,7 +3,7 @@ package com.faizurazadri.storyappsubmission1.data.source.response
 import com.faizurazadri.storyappsubmission1.data.source.model.ListStoryItem
 import com.google.gson.annotations.SerializedName
 
-data class GetStoriesResponse(
+data class GetStoriesLocation(
 
 	@field:SerializedName("listStory")
 	val listStory: List<ListStoryItem?>? = null,

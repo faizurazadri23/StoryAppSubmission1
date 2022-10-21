@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.faizurazadri.storyappsubmission1.R
-import com.faizurazadri.storyappsubmission1.data.source.response.ListStoryItem
+import com.faizurazadri.storyappsubmission1.data.source.model.ListStoryItem
 import com.faizurazadri.storyappsubmission1.databinding.ItemStoryBinding
 import com.faizurazadri.storyappsubmission1.ui.DetailStoriesActivity
 
@@ -38,12 +38,13 @@ class AdapterStory : RecyclerView.Adapter<AdapterStory.StoriesViewHolder>() {
                     intent.putExtra(DetailStoriesActivity.EXTRA_IMAGE, stories.photoUrl)
                     intent.putExtra(DetailStoriesActivity.EXTRA_DESCRIPTION, stories.description)
 
-                    val optionsCompat: ActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        itemView.context as Activity,
-                        Pair(ivItemPhoto, "story_image"),
-                        Pair(tvItemName, "username"),
-                        Pair(tvItemDescripton, "description")
-                    )
+                    val optionsCompat: ActivityOptionsCompat =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            itemView.context as Activity,
+                            Pair(ivItemPhoto, "story_image"),
+                            Pair(tvItemName, "username"),
+                            Pair(tvItemDescripton, "description")
+                        )
                     itemView.context.startActivity(
                         intent,
                         optionsCompat.toBundle()

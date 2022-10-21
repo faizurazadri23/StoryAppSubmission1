@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.faizurazadri.storyappsubmission1.R
-import com.faizurazadri.storyappsubmission1.data.source.response.ListStoryItem
 import com.faizurazadri.storyappsubmission1.databinding.ActivityDetailStoriesBinding
 
 class DetailStoriesActivity : AppCompatActivity() {
@@ -33,7 +32,8 @@ class DetailStoriesActivity : AppCompatActivity() {
             detailStoriesBinding.tvDetailDescription.text = extras.getString(EXTRA_DESCRIPTION)
             Glide.with(applicationContext)
                 .load(extras.getString(EXTRA_IMAGE))
-                .apply(RequestOptions.placeholderOf(R.drawable.no_image).error(R.drawable.no_image)).into(detailStoriesBinding.ivDetailPhoto)
+                .apply(RequestOptions.placeholderOf(R.drawable.no_image).error(R.drawable.no_image))
+                .into(detailStoriesBinding.ivDetailPhoto)
         }
     }
 
