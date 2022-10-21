@@ -34,10 +34,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val storyViewModel: StoryViewModel by viewModels()
     private lateinit var userData: LoginResult
 
-    companion object {
-        private const val TAG = "Maps"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -100,11 +96,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             focusLocation?.let { it1 -> CameraUpdateFactory.newLatLng(it1) }
                 ?.let { it2 -> mMap.moveCamera(it2) }
         }
-
-        // Add a marker in Sydney and move the camera
-
-
-
 
         getMyLocation()
     }
