@@ -27,4 +27,7 @@
     <string name="peta">Peta</string>
     <string name="normal_type">Normal</string>
     <string name="satellite_type">Satelit</string>
+    <string name="timeout">Timeout</string>
+    <string name="muat_ulang">Muat Ulang</string>
+    <string name="simpan">SIMPAN</string>
 </resources>

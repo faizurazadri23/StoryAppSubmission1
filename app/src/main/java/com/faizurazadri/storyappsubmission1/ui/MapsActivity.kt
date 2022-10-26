@@ -18,6 +18,7 @@ import com.faizurazadri.storyappsubmission1.R
 import com.faizurazadri.storyappsubmission1.data.source.model.ListStoryItem
 import com.faizurazadri.storyappsubmission1.data.source.response.LoginResult
 import com.faizurazadri.storyappsubmission1.databinding.ActivityMapsBinding
+import com.faizurazadri.storyappsubmission1.ui.viewmodel.MapsViewModel
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.StoryViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -31,7 +32,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
-    private val storyViewModel: StoryViewModel by viewModels()
+    private val mapsViewModel: MapsViewModel by viewModels()
     private lateinit var userData: LoginResult
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,9 +81,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        userData.token?.let { storyViewModel.getStoriesLocation(it, 1) }
+        userData.token?.let { mapsViewModel.getStoriesLocation(it, 1) }
 
-        storyViewModel.storyList.observe(this) {
+        mapsViewModel.storyList.observe(this) {
 
             for (item in it){
 

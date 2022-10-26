@@ -5,23 +5,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.faizurazadri.storyappsubmission1.R
 import com.faizurazadri.storyappsubmission1.adapter.AdapterStory
+import com.faizurazadri.storyappsubmission1.adapter.LoadingStateAdapter
 import com.faizurazadri.storyappsubmission1.data.source.response.LoginResult
 import com.faizurazadri.storyappsubmission1.databinding.ActivityListStoryBinding
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.StoryViewModel
+import com.faizurazadri.storyappsubmission1.ui.viewmodel.ViewModelFactory
 import com.google.gson.Gson
 
 class ListStoryActivity : AppCompatActivity() {
 
     private lateinit var listStoryBinding: ActivityListStoryBinding
     private lateinit var userData: LoginResult
-    private val storyViewModel: StoryViewModel by viewModels()
+    private val storyViewModel: StoryViewModel by viewModels {
+        ViewModelFactory(this)
+    }
     private val adapterStory = AdapterStory()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,9 +32,12 @@ class ListStoryActivity : AppCompatActivity() {
         listStoryBinding = ActivityListStoryBinding.inflate(layoutInflater)
         setContentView(listStoryBinding.root)
 
-        storyViewModel.isLoading.observe(this) {
+        /*storyViewModel.isLoading.observe(this) {
             listStoryBinding.loading.visibility = if (it) View.VISIBLE else View.GONE
-        }
+        }*/
+
+        listStoryBinding.itemStory.layoutManager = LinearLayoutManager(this)
+
 
         val sharedPreference = getSharedPreferences("auth", Context.MODE_PRIVATE)
 
@@ -40,24 +46,41 @@ class ListStoryActivity : AppCompatActivity() {
             Gson().fromJson(sharedPreference.getString("user", ""), LoginResult::class.java)
 
 
+        getListStories()
     }
 
     private fun getListStories() {
-        listStoryBinding.loading.visibility = View.VISIBLE
-        storyViewModel.storyList.observe(this) {
-            listStoryBinding.emptyData.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+        /* listStoryBinding.loading.visibility = View.VISIBLE
+         storyViewModel.storyList.observe(this) {
+             listStoryBinding.emptyData.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
 
-            adapterStory.differ.submitList(it)
+             adapterStory.differ.submitList(it)
 
-            listStoryBinding.apply {
-                itemStory.apply {
-                    layoutManager = LinearLayoutManager(this@ListStoryActivity)
-                    adapter = adapterStory
-                }
-            }
+             listStoryBinding.apply {
+                 itemStory.apply {
+                     layoutManager = LinearLayoutManager(this@ListStoryActivity)
+                     adapter = adapterStory
+                 }
+             }
 
-            listStoryBinding.loading.visibility = View.GONE
+             listStoryBinding.loading.visibility = View.GONE
+         }*/
+
+        val adapterStory = AdapterStory()
+        listStoryBinding.itemStory.adapter = adapterStory.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapterStory.retry()
+            })
+
+        userData.token?.let { storyViewModel.getAllStories(it) }?.observe(this) {
+            adapterStory.submitData(lifecycle, it)
+
         }
+
+        /*storyViewModel.getAllStories.observe(this) {
+            adapterStory.submitData(lifecycle, it)
+        }*/
+
 
     }
 
@@ -119,7 +142,6 @@ class ListStoryActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        userData.token?.let { storyViewModel.getAllStories(it) }
-        getListStories()
+
     }
 }

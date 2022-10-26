@@ -12,13 +12,16 @@ import com.faizurazadri.storyappsubmission1.R
 import com.faizurazadri.storyappsubmission1.data.source.response.LoginResult
 import com.faizurazadri.storyappsubmission1.databinding.ActivityLoginBinding
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.StoryViewModel
+import com.faizurazadri.storyappsubmission1.ui.viewmodel.ViewModelFactory
 import com.google.gson.Gson
 
 class LoginActivity : AppCompatActivity() {
 
 
     private lateinit var loginBinding: ActivityLoginBinding
-    private val storyViewModel: StoryViewModel by viewModels()
+    private val storyViewModel: StoryViewModel by viewModels {
+        ViewModelFactory(this)
+    }
     private var gson =  Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {

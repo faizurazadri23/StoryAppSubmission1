@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
-import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,7 +17,22 @@ import com.faizurazadri.storyappsubmission1.data.source.model.ListStoryItem
 import com.faizurazadri.storyappsubmission1.databinding.ItemStoryBinding
 import com.faizurazadri.storyappsubmission1.ui.DetailStoriesActivity
 
-class AdapterStory : RecyclerView.Adapter<AdapterStory.StoriesViewHolder>() {
+class AdapterStory :
+    PagingDataAdapter<ListStoryItem, AdapterStory.StoriesViewHolder>(DIFF_CALLBACK) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoriesViewHolder {
+        val itemStoryBinding =
+            ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return StoriesViewHolder(itemStoryBinding)
+    }
+
+    override fun onBindViewHolder(holder: StoriesViewHolder, position: Int) {
+        val data = getItem(position)
+
+        if (data != null) {
+            holder.bind(data)
+        }
+    }
 
     inner class StoriesViewHolder(private val binding: ItemStoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -55,28 +70,20 @@ class AdapterStory : RecyclerView.Adapter<AdapterStory.StoriesViewHolder>() {
 
     }
 
-    private val differCallback = object : DiffUtil.ItemCallback<ListStoryItem>() {
-        override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
-            return oldItem.id == newItem.id
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
+            override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem == newItem
+            }
+
+            @SuppressLint("DiffUtilEquals")
+            override fun areContentsTheSame(
+                oldItem: ListStoryItem,
+                newItem: ListStoryItem
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
         }
-
-        @SuppressLint("DiffUtilEquals")
-        override fun areContentsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
-            return oldItem == newItem
-        }
     }
-
-    var differ = AsyncListDiffer(this, differCallback)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoriesViewHolder {
-        val itemStoryBinding =
-            ItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return StoriesViewHolder(itemStoryBinding)
-    }
-
-    override fun onBindViewHolder(holder: StoriesViewHolder, position: Int) {
-        holder.bind(differ.currentList[position])
-    }
-
-    override fun getItemCount() = differ.currentList.size
 }

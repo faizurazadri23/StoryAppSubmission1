@@ -22,6 +22,7 @@ import com.faizurazadri.storyappsubmission1.R
 import com.faizurazadri.storyappsubmission1.data.source.response.LoginResult
 import com.faizurazadri.storyappsubmission1.databinding.ActivityAddStoryBinding
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.StoryViewModel
+import com.faizurazadri.storyappsubmission1.ui.viewmodel.ViewModelFactory
 import com.faizurazadri.storyappsubmission1.utils.createCustomTempFile
 import com.faizurazadri.storyappsubmission1.utils.uriToFile
 import com.google.gson.Gson
@@ -38,7 +39,9 @@ class AddStoryActivity : AppCompatActivity() {
     private var getFile: File? = null
     private lateinit var currentPhotoPath: String
 
-    private val storyViewModel: StoryViewModel by viewModels()
+    private val storyViewModel: StoryViewModel by viewModels{
+        ViewModelFactory(this)
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

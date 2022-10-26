@@ -29,4 +29,7 @@
     <string name="title_activity_maps">Maps</string>
     <string name="normal_type">Normal</string>
     <string name="satellite_type">Satellite</string>
+    <string name="timeout">Timeout</string>
+    <string name="muat_ulang">Try Again</string>
+    <string name="simpan">SAVE</string>
 </resources>
