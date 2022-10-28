@@ -22,8 +22,9 @@ class ListStoryActivity : AppCompatActivity() {
 
     private lateinit var listStoryBinding: ActivityListStoryBinding
     private lateinit var userData: LoginResult
+    private val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
     private val storyViewModel: StoryViewModel by viewModels {
-        ViewModelFactory(this)
+        factory
     }
     private val adapterStory = AdapterStory()
 

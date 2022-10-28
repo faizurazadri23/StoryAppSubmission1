@@ -39,8 +39,9 @@ class AddStoryActivity : AppCompatActivity() {
     private var getFile: File? = null
     private lateinit var currentPhotoPath: String
 
-    private val storyViewModel: StoryViewModel by viewModels{
-        ViewModelFactory(this)
+    private val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
+    private val storyViewModel: StoryViewModel by viewModels {
+        factory
     }
 
     override fun onRequestPermissionsResult(

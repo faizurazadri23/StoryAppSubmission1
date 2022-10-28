@@ -62,4 +62,10 @@ dependencies {
     implementation "androidx.test.espresso:espresso-idling-resource:3.4.0"
 
     implementation "androidx.paging:paging-runtime-ktx:3.1.0"
+
+    //mockito
+    testImplementation 'org.mockito:mockito-core:3.12.4'
+    testImplementation 'org.mockito:mockito-inline:3.12.4'
+
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
 }

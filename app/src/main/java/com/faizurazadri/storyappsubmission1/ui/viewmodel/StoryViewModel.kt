@@ -1,8 +1,10 @@
 package com.faizurazadri.storyappsubmission1.ui.viewmodel
 
-import android.content.Context
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.faizurazadri.storyappsubmission1.api.ApiConfig
@@ -11,7 +13,6 @@ import com.faizurazadri.storyappsubmission1.data.source.repository.StoriesReposi
 import com.faizurazadri.storyappsubmission1.data.source.response.AddNewStoryResponse
 import com.faizurazadri.storyappsubmission1.data.source.response.CreateAccountResponse
 import com.faizurazadri.storyappsubmission1.data.source.response.LoginResponse
-import com.faizurazadri.storyappsubmission1.di.Injection
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -29,16 +30,9 @@ class StoryViewModel(private val storiesRepository: StoriesRepository) : ViewMod
     private val _loginResponse = MutableLiveData<LoginResponse>()
     val loginResponse: LiveData<LoginResponse> = _loginResponse;
 
-   /* private val _storiesList = MutableLiveData<List<ListStoryItem>>()
-    val storyList: LiveData<List<ListStoryItem>> = _storiesList*/
 
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
-
-    private val _storiesList = MutableLiveData<PagingData<ListStoryItem>>()
-    var getAllStories : LiveData<PagingData<ListStoryItem>> =  _storiesList
-
-    private var _header = "token"
 
     fun createdAccount(
         name: String,
@@ -99,33 +93,6 @@ class StoryViewModel(private val storiesRepository: StoriesRepository) : ViewMod
         })
     }
 
-    /*fun getAllStories(token: String) {
-        _isLoading.value = true;
-
-        val client = ApiConfig.getApiService().getAllStories("Bearer $token")
-        client.enqueue(object : Callback<GetStoriesResponse> {
-            override fun onResponse(
-                call: Call<GetStoriesResponse>,
-                response: Response<GetStoriesResponse>
-            ) {
-                _isLoading.value = false
-
-                if (response.isSuccessful) {
-                    _error.value = false
-                    _storiesList.value = response.body()?.listStory as List<ListStoryItem>?
-                } else {
-                    _error.value = true
-                    Log.e(TAG, "onFailure : ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<GetStoriesResponse>, t: Throwable) {
-                _isLoading.value = false
-                Log.e(TAG, "onFailure: ${t.message.toString()}")
-            }
-        })
-    }*/
-
     fun getAllStories(token: String): LiveData<PagingData<ListStoryItem>> {
 
         return storiesRepository.getStories(token).cachedIn(viewModelScope)
@@ -164,19 +131,8 @@ class StoryViewModel(private val storiesRepository: StoriesRepository) : ViewMod
     }
 
 
-
     companion object {
         private const val TAG = "StoryViewModel"
 
-    }
-}
-
-class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(StoryViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return StoryViewModel(Injection.provideRepository(context)) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

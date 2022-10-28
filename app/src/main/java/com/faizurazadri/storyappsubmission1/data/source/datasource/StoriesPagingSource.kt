@@ -6,7 +6,6 @@ import androidx.paging.PagingState
 import com.faizurazadri.storyappsubmission1.api.ApiService
 import com.faizurazadri.storyappsubmission1.data.source.model.ListStoryItem
 import com.faizurazadri.storyappsubmission1.data.source.response.GetStoriesResponse
-import com.faizurazadri.storyappsubmission1.ui.viewmodel.StoryViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

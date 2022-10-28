@@ -19,8 +19,9 @@ class LoginActivity : AppCompatActivity() {
 
 
     private lateinit var loginBinding: ActivityLoginBinding
+    private val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
     private val storyViewModel: StoryViewModel by viewModels {
-        ViewModelFactory(this)
+        factory
     }
     private var gson =  Gson()
 
