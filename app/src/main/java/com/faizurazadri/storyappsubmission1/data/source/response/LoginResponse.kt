@@ -1,6 +1,7 @@
 package com.faizurazadri.storyappsubmission1.data.source.response
 
 import android.os.Parcelable
+import com.faizurazadri.storyappsubmission1.data.source.model.LoginResult
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -8,26 +9,11 @@ import kotlinx.parcelize.Parcelize
 data class LoginResponse(
 
     @field:SerializedName("loginResult")
-    val loginResult: LoginResult? = null,
+    val loginResult: LoginResult,
 
     @field:SerializedName("error")
-    val error: Boolean? = null,
+    val error: Boolean,
 
     @field:SerializedName("message")
-    val message: String? = null
-) : Parcelable
-
-@Parcelize
-data class LoginResult(
-
-    @field:SerializedName("name")
-    val name: String? = null,
-
-    @field:SerializedName("userId")
-    val userId: String? = null,
-
-    @field:SerializedName("token")
-    val token: String? = null
-
-
+    val message: String
 ) : Parcelable

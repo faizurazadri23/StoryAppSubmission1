@@ -7,17 +7,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.faizurazadri.storyappsubmission1.R
+import com.faizurazadri.storyappsubmission1.data.source.model.LoginResult
 import com.faizurazadri.storyappsubmission1.data.source.repository.ResultProcess
-import com.faizurazadri.storyappsubmission1.data.source.response.LoginResult
 import com.faizurazadri.storyappsubmission1.databinding.ActivityMapsBinding
-import com.faizurazadri.storyappsubmission1.ui.viewmodel.MapsViewModel
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.StoryViewModel
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.ViewModelFactory
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -33,7 +30,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
-    private val mapsViewModel: MapsViewModel by viewModels {
+    private val storyViewModel: StoryViewModel by viewModels {
         factory
     }
     private lateinit var userData: LoginResult
@@ -85,23 +82,39 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         userData.token?.let {
-            mapsViewModel.getListStories(it, 1).observe(this) { result ->
-                if (result!=null){
-                    when(result){
+            storyViewModel.getListStories(it, 1).observe(this) { result ->
+                if (result != null) {
+                    when (result) {
                         is ResultProcess.Loading -> {
                             Log.i("StoryViewModel", "lOADING")
                         }
                         is ResultProcess.Success -> {
                             var listStoryItems = result.data
 
-                            for (item in listStoryItems){
-                                val location = item.lat?.let { it1 -> item.lon?.let { it2 -> LatLng(it1, it2) } }
+                            for (item in listStoryItems) {
+                                val location = item.lat?.let { it1 ->
+                                    item.lon?.let { it2 ->
+                                        LatLng(
+                                            it1,
+                                            it2
+                                        )
+                                    }
+                                }
 
-                                location?.let { it1 -> MarkerOptions().position(it1).title(item.name) }
+                                location?.let { it1 ->
+                                    MarkerOptions().position(it1).title(item.name)
+                                }
                                     ?.let { it2 -> mMap.addMarker(it2) }
                             }
 
-                            val focusLocation = listStoryItems.get(0).lon?.let { it1 -> listStoryItems[0].lat?.let { it2 -> LatLng(it2, it1) } }
+                            val focusLocation = listStoryItems.get(0).lon?.let { it1 ->
+                                listStoryItems[0].lat?.let { it2 ->
+                                    LatLng(
+                                        it2,
+                                        it1
+                                    )
+                                }
+                            }
                             focusLocation?.let { it1 -> CameraUpdateFactory.newLatLng(it1) }
                                 ?.let { it2 -> mMap.moveCamera(it2) }
                         }

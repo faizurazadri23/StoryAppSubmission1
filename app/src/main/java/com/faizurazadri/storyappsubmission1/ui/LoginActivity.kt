@@ -8,8 +8,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.faizurazadri.storyappsubmission1.R
-import com.faizurazadri.storyappsubmission1.data.source.response.LoginResult
+import com.faizurazadri.storyappsubmission1.data.source.model.LoginResult
+import com.faizurazadri.storyappsubmission1.data.source.repository.ResultProcess
 import com.faizurazadri.storyappsubmission1.databinding.ActivityLoginBinding
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.StoryViewModel
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.ViewModelFactory
@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
     private val storyViewModel: StoryViewModel by viewModels {
         factory
     }
-    private var gson =  Gson()
+    private var gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,36 +33,48 @@ class LoginActivity : AppCompatActivity() {
 
         checkLogin()
 
-        storyViewModel.isLoading.observe(this) {
-            loginBinding.loading.visibility = if (it) View.VISIBLE else View.GONE
-        }
 
         loginBinding.btnLogin.setOnClickListener {
+
+
             storyViewModel.login(
                 loginBinding.edLoginEmail.text.toString(),
                 loginBinding.edLoginPassword.text.toString()
-            )
+            ).observe(this) { result ->
+
+                if (result != null) {
+                    when (result) {
+                        is ResultProcess.Loading -> {
+                            loginBinding.loading.visibility = View.VISIBLE
+                        }
+                        is ResultProcess.Success -> {
+
+                            saveUser(result.data.loginResult)
+                            loginBinding.loading.visibility = View.GONE
+                            Intent(this, ListStoryActivity::class.java).also {
+                                it.flags =
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(it)
+                                finish()
+                            }
+                        }
+
+                        is ResultProcess.Error -> {
+                            loginBinding.loading.visibility = View.GONE
+                            Toast.makeText(
+                                this,
+                                result.error,
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+            }
 
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
-        storyViewModel.isError.observe(this) {
-
-            if (it) {
-                Toast.makeText(this, applicationContext.getString(R.string.failed_login), Toast.LENGTH_LONG).show()
-            }
-        }
-
-        storyViewModel.loginResponse.observe(this) {
-
-            it.loginResult?.let { it1 -> saveUser(it1) }
-            Intent(this, ListStoryActivity::class.java).also {
-                it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(it)
-                finish()
-            }
-        }
 
         loginBinding.registerAccount.setOnClickListener {
             Intent(this, RegisterActivity::class.java).also { startActivity(it) }

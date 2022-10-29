@@ -7,13 +7,18 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.faizurazadri.storyappsubmission1.data.source.repository.ResultProcess
 import com.faizurazadri.storyappsubmission1.databinding.ActivityRegisterBinding
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.StoryViewModel
+import com.faizurazadri.storyappsubmission1.ui.viewmodel.ViewModelFactory
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var registerBinding: ActivityRegisterBinding
-    private val storyViewModel: StoryViewModel by viewModels()
+    private val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
+    private val storyViewModel: StoryViewModel by viewModels {
+        factory
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,30 +26,40 @@ class RegisterActivity : AppCompatActivity() {
         val view = registerBinding.root
         setContentView(view)
 
-        storyViewModel.isLoading.observe(this) {
-            registerBinding.loading.visibility = if (it) View.VISIBLE else View.GONE
-        }
-
         registerBinding.btnRegister.setOnClickListener {
             storyViewModel.createdAccount(
                 registerBinding.edRegisterName.text.toString(),
                 registerBinding.edRegisterEmail.text.toString(),
                 registerBinding.edRegisterPassword.text.toString()
-            )
+            ).observe(this) { result ->
+
+                if (result != null) {
+                    when (result) {
+                        is ResultProcess.Loading -> {
+                            registerBinding.loading.visibility = View.VISIBLE
+                        }
+                        is ResultProcess.Success -> {
+
+                            finish()
+                            Toast.makeText(this, result.data.message, Toast.LENGTH_LONG).show()
+                        }
+
+                        is ResultProcess.Error -> {
+                            registerBinding.loading.visibility = View.GONE
+                            Toast.makeText(
+                                this,
+                                result.error,
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+            }
 
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
 
-        storyViewModel.isError.observe(this) {
-
-            if (it) {
-                Toast.makeText(this, "Pendaftaran Gagal", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(this, "Buat Akun Berhasil", Toast.LENGTH_LONG).show()
-                finish()
-            }
-        }
     }
 
 

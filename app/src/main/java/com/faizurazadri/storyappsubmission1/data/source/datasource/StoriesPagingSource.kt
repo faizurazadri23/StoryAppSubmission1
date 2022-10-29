@@ -32,8 +32,6 @@ class StoriesPagingSource(private val apiService: ApiService, private val token:
         val position = params.key ?: INITIAL_PAGE_INDEX
         val responseData = apiService.getAllStories("Bearer $token", position, params.loadSize)
 
-        Log.e("TEST TOKEN", "onData: $token")
-
         return try {
             var datalist = suspendCoroutine<List<ListStoryItem>> { continuation ->
                 responseData.enqueue(object :Callback<GetStoriesResponse>{

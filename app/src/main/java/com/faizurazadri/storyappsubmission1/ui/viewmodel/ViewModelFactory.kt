@@ -10,9 +10,7 @@ class ViewModelFactory(private val storiesRepository: StoriesRepository) :
     ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MapsViewModel::class.java)) {
-            return MapsViewModel(storiesRepository) as T
-        } else if (modelClass.isAssignableFrom(StoryViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(StoryViewModel::class.java)) {
             return StoryViewModel(storiesRepository) as T
         }
 

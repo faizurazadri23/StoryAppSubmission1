@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.faizurazadri.storyappsubmission1.R
 import com.faizurazadri.storyappsubmission1.adapter.AdapterStory
 import com.faizurazadri.storyappsubmission1.adapter.LoadingStateAdapter
-import com.faizurazadri.storyappsubmission1.data.source.response.LoginResult
+import com.faizurazadri.storyappsubmission1.data.source.model.LoginResult
 import com.faizurazadri.storyappsubmission1.databinding.ActivityListStoryBinding
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.StoryViewModel
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.ViewModelFactory

@@ -19,7 +19,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.faizurazadri.storyappsubmission1.R
-import com.faizurazadri.storyappsubmission1.data.source.response.LoginResult
+import com.faizurazadri.storyappsubmission1.data.source.model.LoginResult
+import com.faizurazadri.storyappsubmission1.data.source.repository.ResultProcess
 import com.faizurazadri.storyappsubmission1.databinding.ActivityAddStoryBinding
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.StoryViewModel
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.ViewModelFactory
@@ -79,10 +80,6 @@ class AddStoryActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = applicationContext.getString(R.string.tambah_story)
 
-        storyViewModel.isLoading.observe(this) {
-            binding.loading.visibility = if (it) View.VISIBLE else View.GONE
-        }
-
         val sharedPreference = getSharedPreferences("auth", Context.MODE_PRIVATE)
 
 
@@ -91,30 +88,14 @@ class AddStoryActivity : AppCompatActivity() {
 
 
 
-        binding.buttonCamera.setOnClickListener({ startTakePhoto() })
-        binding.buttonGallery.setOnClickListener({ startGallery() })
-        binding.buttonAdd.setOnClickListener(View.OnClickListener {
+        binding.buttonCamera.setOnClickListener { startTakePhoto() }
+        binding.buttonGallery.setOnClickListener { startGallery() }
+        binding.buttonAdd.setOnClickListener {
 
-            uploadImage()
-
-            storyViewModel.isError.observe(this) {
-
-                if (it) {
-                    Toast.makeText(
-                        this,
-                        applicationContext.getString(R.string.failed_login),
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-
-            storyViewModel.message.observe(this) {
-                finish()
-                Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
-            }
+            sendNewStory()
 
 
-        })
+        }
     }
 
     private val launcherIntentGallery = registerForActivityResult(
@@ -136,7 +117,7 @@ class AddStoryActivity : AppCompatActivity() {
         launcherIntentGallery.launch(chooser)
     }
 
-    private fun uploadImage() {
+    private fun sendNewStory() {
         if (getFile != null) {
             val file = getFile as File
 
@@ -149,7 +130,34 @@ class AddStoryActivity : AppCompatActivity() {
                 requestImageFile
             )
 
-            userData.token?.let { storyViewModel.addNewStories(it, imageMultipart, description) }
+            userData.token?.let {
+                storyViewModel.addNewStories(
+                    it, imageMultipart, description
+                ).observe(this) { result ->
+
+                    if (result != null) {
+                        when (result) {
+                            is ResultProcess.Loading -> {
+                                binding.loading.visibility = View.VISIBLE
+                            }
+                            is ResultProcess.Success -> {
+
+                                finish()
+                                Toast.makeText(this, result.data.message, Toast.LENGTH_LONG).show()
+                            }
+
+                            is ResultProcess.Error -> {
+                                binding.loading.visibility = View.GONE
+                                Toast.makeText(
+                                    this,
+                                    result.error,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    }
+                }
+            }
 
         } else {
             Toast.makeText(
