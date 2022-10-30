@@ -1,9 +1,11 @@
 package com.faizurazadri.storyappsubmission1.api
 
-import com.faizurazadri.storyappsubmission1.data.source.response.*
+import com.faizurazadri.storyappsubmission1.data.source.response.AddNewStoryResponse
+import com.faizurazadri.storyappsubmission1.data.source.response.CreateAccountResponse
+import com.faizurazadri.storyappsubmission1.data.source.response.GetStoriesResponse
+import com.faizurazadri.storyappsubmission1.data.source.response.LoginResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
@@ -26,8 +28,8 @@ interface ApiService {
     @GET("stories")
     suspend fun getAllStories(
         @Header("Authorization") header: String,
-        @Query("page") page: Int?=null,
-        @Query("size") size: Int?=null
+        @Query("page") page: Int? = null,
+        @Query("size") size: Int? = null
     ): GetStoriesResponse
 
     @Multipart
