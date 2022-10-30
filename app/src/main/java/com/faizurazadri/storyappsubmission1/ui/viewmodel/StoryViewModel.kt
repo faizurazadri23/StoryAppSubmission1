@@ -43,7 +43,7 @@ class StoryViewModel(private val storiesRepository: StoriesRepository) : ViewMod
         return storiesRepository.addNewStory(token, imageMultipart, description)
     }
 
-    fun getListStories(token: String, id : Int) : LiveData<ResultProcess<List<ListStoryItem>>>{
+    fun getListStoriesLocation(token: String, id : Int) : LiveData<ResultProcess<List<ListStoryItem>>>{
         return storiesRepository.getStoryLocation(token, id)
     }
 }

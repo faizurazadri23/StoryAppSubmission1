@@ -1,6 +1,5 @@
 package com.faizurazadri.storyappsubmission1.data.source.datasource
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.faizurazadri.storyappsubmission1.api.ApiService
@@ -34,14 +33,16 @@ class StoriesPagingSource(private val apiService: ApiService, private val token:
 
         return try {
             var datalist = suspendCoroutine<List<ListStoryItem>> { continuation ->
-                responseData.enqueue(object :Callback<GetStoriesResponse>{
+                responseData.enqueue(object : Callback<GetStoriesResponse> {
                     override fun onResponse(
                         call: Call<GetStoriesResponse>,
                         response: Response<GetStoriesResponse>
                     ) {
-                        if (response.isSuccessful){
-                            continuation.resume((response.body()?.listStory ?: emptyList()) as List<ListStoryItem>)
-                        }else{
+                        if (response.isSuccessful) {
+                            continuation.resume(
+                                (response.body()?.listStory ?: emptyList()) as List<ListStoryItem>
+                            )
+                        } else {
                             continuation.resume(emptyList())
                         }
                     }

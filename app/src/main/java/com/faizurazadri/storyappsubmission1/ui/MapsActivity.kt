@@ -82,7 +82,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         userData.token?.let {
-            storyViewModel.getListStories(it, 1).observe(this) { result ->
+            storyViewModel.getListStoriesLocation(it, 1).observe(this) { result ->
                 if (result != null) {
                     when (result) {
                         is ResultProcess.Loading -> {
