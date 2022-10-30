@@ -2,10 +2,16 @@ package com.faizurazadri.storyappsubmission1.data.source.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.AsyncPagingDataDiffer
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.PagingData
+import androidx.recyclerview.widget.ListUpdateCallback
+import com.faizurazadri.storyappsubmission1.adapter.AdapterStory
 import com.faizurazadri.storyappsubmission1.api.ApiService
 import com.faizurazadri.storyappsubmission1.data.source.FakeApiService
 import com.faizurazadri.storyappsubmission1.data.source.datasource.StoriesPagingSourceTest
 import com.faizurazadri.storyappsubmission1.data.source.model.ListStoryItem
+import com.faizurazadri.storyappsubmission1.ui.viewmodel.StoryViewModel
 import com.faizurazadri.storyappsubmission1.utils.CoroutinesTestRule
 import com.faizurazadri.storyappsubmission1.utils.DataDummy
 import com.faizurazadri.storyappsubmission1.utils.getOrAwaitValue
@@ -18,11 +24,11 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
+@ExperimentalPagingApi
 @RunWith(MockitoJUnitRunner::class)
 class StoriesRepositoryTest {
     @get:Rule
@@ -32,7 +38,12 @@ class StoriesRepositoryTest {
     var coroutinesTestRule = CoroutinesTestRule()
 
 
+    @Mock
     private lateinit var apiService: ApiService
+
+    @Mock
+    private lateinit var storiesRepositoryMock: StoriesRepository
+
     private lateinit var storiesRepository: StoriesRepository
 
     private val dummyLoginResponse = DataDummy.generateDummyLoginResponse()
@@ -40,6 +51,7 @@ class StoriesRepositoryTest {
     private val dummyCreateAccount = DataDummy.generateDummyRegisterResponse()
     private val dummyAddNewStory = DataDummy.generateDummyStoryCreateResponse()
 
+    private val dummyStoryResponse = DataDummy.generateDummyStoryResponse()
 
     private val dummyName = "faizura"
     private val dummyEmail = "dicoding@gmail.com"
@@ -49,12 +61,14 @@ class StoriesRepositoryTest {
     private val dummyMultipart = DataDummy.generateDummyMultipartFile()
     private val dummyDescription = DataDummy.generateDummyMultipartDescription()
     private val data = StoriesPagingSourceTest.snapshot(dummyStory)
+    private lateinit var storyViewModel: StoryViewModel
 
 
     @Before
     fun setup() {
         apiService = FakeApiService()
         storiesRepository = StoriesRepository(apiService)
+        storyViewModel = StoryViewModel(storiesRepository)
     }
 
 
@@ -96,7 +110,7 @@ class StoriesRepositoryTest {
     @Test
     fun `Add New Story successfuly - result success`(): Unit = runTest {
 
-        val expectedAddNewStory = DataDummy.generateDummyStoryCreateResponse()
+        val expectedAddNewStory = dummyAddNewStory
 
         val actualAddNewStory =
             storiesRepository.addNewStory(dummyToken, dummyMultipart, dummyDescription)
@@ -112,9 +126,38 @@ class StoriesRepositoryTest {
     }
 
     @Test
+    fun `Get All Story with page- result success`() = runTest {
+
+        val expectedStory = MutableLiveData<PagingData<ListStoryItem>>()
+        expectedStory.value = data
+
+        `when`(storiesRepositoryMock.getStories(dummyToken)).thenReturn(expectedStory)
+
+        val actualStory =
+            storiesRepositoryMock.getStories(dummyToken).getOrAwaitValue()
+
+        val differ = AsyncPagingDataDiffer(
+            diffCallback = AdapterStory.DIFF_CALLBACK,
+            updateCallback = noopListUpdateCallback,
+            mainDispatcher = coroutinesTestRule.testDispatcher,
+            workerDispatcher = coroutinesTestRule.testDispatcher
+        )
+
+        differ.submitData(actualStory)
+
+        Assert.assertNotNull(differ.snapshot())
+        Assert.assertEquals(
+            dummyStory,
+            differ.snapshot()
+        )
+
+
+    }
+
+    @Test
     fun `Get Story Location - result success`(): Unit = runTest {
 
-        val expectedStoryLocation = DataDummy.generateDummyStoryResponse()
+        val expectedStoryLocation = dummyStoryResponse
 
         val actualStoryLocation =
             storiesRepository.getStoryLocation(dummyToken, 1)
@@ -122,9 +165,25 @@ class StoriesRepositoryTest {
         actualStoryLocation.observeForTesting {
             Assert.assertNotNull(actualStoryLocation)
             Assert.assertEquals(
-                expectedStoryLocation, actualStoryLocation
+                expectedStoryLocation.listStory.size,
+                (actualStoryLocation.value as ResultProcess.Success).data.size
             )
         }
 
+    }
+
+    private val noopListUpdateCallback = object : ListUpdateCallback {
+        override fun onInserted(position: Int, count: Int) {
+        }
+
+        override fun onRemoved(position: Int, count: Int) {
+        }
+
+        override fun onMoved(fromPosition: Int, toPosition: Int) {
+
+        }
+
+        override fun onChanged(position: Int, count: Int, payload: Any?) {
+        }
     }
 }

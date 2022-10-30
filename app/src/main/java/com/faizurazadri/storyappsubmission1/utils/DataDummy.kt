@@ -15,21 +15,7 @@ object DataDummy {
     fun generateDummyStoryResponse(): GetStoriesResponse {
         val error= false
         val message = "Stories fetched successfully"
-        val listStoryItem = mutableListOf<ListStoryItem>()
-
-        for (i in 0 until 10) {
-            val stories = ListStoryItem(
-                id = "story-D2VecBT0ZLNsGeBN",
-                name = "tess",
-                description = "Testing data",
-                lat = -6.342342342342342,
-                lon = 106.87030642297793,
-                photoUrl = "https://story-api.dicoding.dev/images/stories/photos-1667052100665_TbntNCXd.jpg",
-                createdAt = "2022-10-29T14:01:40.668Z"
-            )
-
-            listStoryItem.add(stories)
-        }
+        val listStoryItem = generateDummyStoriesList()
 
         return GetStoriesResponse(listStoryItem, error, message)
     }
