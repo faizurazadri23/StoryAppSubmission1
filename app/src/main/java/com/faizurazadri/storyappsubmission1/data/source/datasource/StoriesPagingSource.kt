@@ -33,6 +33,7 @@ class StoriesPagingSource(private val apiService: ApiService, private val token:
 
         return try {
             var datalist = suspendCoroutine<List<ListStoryItem>> { continuation ->
+
                 responseData.enqueue(object : Callback<GetStoriesResponse> {
                     override fun onResponse(
                         call: Call<GetStoriesResponse>,

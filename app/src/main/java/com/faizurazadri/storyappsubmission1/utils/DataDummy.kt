@@ -4,12 +4,35 @@ import com.faizurazadri.storyappsubmission1.data.source.model.ListStoryItem
 import com.faizurazadri.storyappsubmission1.data.source.model.LoginResult
 import com.faizurazadri.storyappsubmission1.data.source.response.AddNewStoryResponse
 import com.faizurazadri.storyappsubmission1.data.source.response.CreateAccountResponse
+import com.faizurazadri.storyappsubmission1.data.source.response.GetStoriesResponse
 import com.faizurazadri.storyappsubmission1.data.source.response.LoginResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 object DataDummy {
+
+    fun generateDummyStoryResponse(): GetStoriesResponse {
+        val error= false
+        val message = "Stories fetched successfully"
+        val listStoryItem = mutableListOf<ListStoryItem>()
+
+        for (i in 0 until 10) {
+            val stories = ListStoryItem(
+                id = "story-D2VecBT0ZLNsGeBN",
+                name = "tess",
+                description = "Testing data",
+                lat = -6.342342342342342,
+                lon = 106.87030642297793,
+                photoUrl = "https://story-api.dicoding.dev/images/stories/photos-1667052100665_TbntNCXd.jpg",
+                createdAt = "2022-10-29T14:01:40.668Z"
+            )
+
+            listStoryItem.add(stories)
+        }
+
+        return GetStoriesResponse(listStoryItem, error, message)
+    }
 
     fun generateDummyStoryCreateResponse(): AddNewStoryResponse {
         val error = false
