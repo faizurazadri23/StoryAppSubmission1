@@ -2,9 +2,13 @@ package com.faizurazadri.storyappsubmission1.ui
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +20,7 @@ import com.faizurazadri.storyappsubmission1.data.source.model.LoginResult
 import com.faizurazadri.storyappsubmission1.databinding.ActivityListStoryBinding
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.StoryViewModel
 import com.faizurazadri.storyappsubmission1.ui.viewmodel.ViewModelFactory
+import com.faizurazadri.storyappsubmission1.utils.uriToFile
 import com.google.gson.Gson
 
 class ListStoryActivity : AppCompatActivity() {
@@ -26,16 +31,20 @@ class ListStoryActivity : AppCompatActivity() {
     private val storyViewModel: StoryViewModel by viewModels {
         factory
     }
-    private val adapterStory = AdapterStory()
+
+    private val launcherCreateStory = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+          getListStories()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         listStoryBinding = ActivityListStoryBinding.inflate(layoutInflater)
         setContentView(listStoryBinding.root)
 
-        /*storyViewModel.isLoading.observe(this) {
-            listStoryBinding.loading.visibility = if (it) View.VISIBLE else View.GONE
-        }*/
 
         listStoryBinding.itemStory.layoutManager = LinearLayoutManager(this)
 
@@ -48,24 +57,18 @@ class ListStoryActivity : AppCompatActivity() {
 
 
         getListStories()
+
+        listStoryBinding.swipeStory.setOnRefreshListener {
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                listStoryBinding.swipeStory.isRefreshing = false
+
+                getListStories()
+            }, 4000)
+        }
     }
 
     private fun getListStories() {
-        /* listStoryBinding.loading.visibility = View.VISIBLE
-         storyViewModel.storyList.observe(this) {
-             listStoryBinding.emptyData.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
-
-             adapterStory.differ.submitList(it)
-
-             listStoryBinding.apply {
-                 itemStory.apply {
-                     layoutManager = LinearLayoutManager(this@ListStoryActivity)
-                     adapter = adapterStory
-                 }
-             }
-
-             listStoryBinding.loading.visibility = View.GONE
-         }*/
 
         val adapterStory = AdapterStory()
         listStoryBinding.itemStory.adapter = adapterStory.withLoadStateFooter(
@@ -77,10 +80,6 @@ class ListStoryActivity : AppCompatActivity() {
             adapterStory.submitData(lifecycle, it)
 
         }
-
-        /*storyViewModel.getAllStories.observe(this) {
-            adapterStory.submitData(lifecycle, it)
-        }*/
 
 
     }
@@ -98,7 +97,7 @@ class ListStoryActivity : AppCompatActivity() {
             }
 
             R.id.add_story -> {
-                Intent(this, AddStoryActivity::class.java).also { startActivity(it) }
+                launcherCreateStory.launch(Intent(this, AddStoryActivity::class.java))
                 true
             }
 
@@ -139,10 +138,5 @@ class ListStoryActivity : AppCompatActivity() {
             startActivity(it)
             finish()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
     }
 }

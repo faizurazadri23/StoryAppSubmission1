@@ -28,7 +28,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
-@ExperimentalPagingApi
 @RunWith(MockitoJUnitRunner::class)
 class StoriesRepositoryTest {
     @get:Rule
@@ -40,9 +39,6 @@ class StoriesRepositoryTest {
 
     @Mock
     private lateinit var apiService: ApiService
-
-    @Mock
-    private lateinit var storiesRepositoryMock: StoriesRepository
 
     private lateinit var storiesRepository: StoriesRepository
 
@@ -122,35 +118,6 @@ class StoriesRepositoryTest {
                 (actualAddNewStory.value as ResultProcess.Success).data
             )
         }
-
-    }
-
-    @Test
-    fun `Get All Story with page- result success`() = runTest {
-
-        val expectedStory = MutableLiveData<PagingData<ListStoryItem>>()
-        expectedStory.value = data
-
-        `when`(storiesRepositoryMock.getStories(dummyToken)).thenReturn(expectedStory)
-
-        val actualStory =
-            storiesRepositoryMock.getStories(dummyToken).getOrAwaitValue()
-
-        val differ = AsyncPagingDataDiffer(
-            diffCallback = AdapterStory.DIFF_CALLBACK,
-            updateCallback = noopListUpdateCallback,
-            mainDispatcher = coroutinesTestRule.testDispatcher,
-            workerDispatcher = coroutinesTestRule.testDispatcher
-        )
-
-        differ.submitData(actualStory)
-
-        Assert.assertNotNull(differ.snapshot())
-        Assert.assertEquals(
-            dummyStory,
-            differ.snapshot()
-        )
-
 
     }
 

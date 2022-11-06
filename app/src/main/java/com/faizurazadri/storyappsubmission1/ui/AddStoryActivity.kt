@@ -142,6 +142,10 @@ class AddStoryActivity : AppCompatActivity() {
                             }
                             is ResultProcess.Success -> {
 
+
+                                setResult(
+                                    RESULT_OK,
+                                    Intent())
                                 finish()
                                 Toast.makeText(this, result.data.message, Toast.LENGTH_LONG).show()
                             }
