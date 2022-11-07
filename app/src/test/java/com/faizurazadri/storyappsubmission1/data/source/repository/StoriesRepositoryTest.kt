@@ -17,6 +17,7 @@ import com.faizurazadri.storyappsubmission1.utils.DataDummy
 import com.faizurazadri.storyappsubmission1.utils.getOrAwaitValue
 import com.faizurazadri.storyappsubmission1.utils.observeForTesting
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -28,6 +29,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
+@ExperimentalPagingApi
 @RunWith(MockitoJUnitRunner::class)
 class StoriesRepositoryTest {
     @get:Rule
@@ -41,6 +43,9 @@ class StoriesRepositoryTest {
     private lateinit var apiService: ApiService
 
     private lateinit var storiesRepository: StoriesRepository
+
+    @Mock
+    private lateinit var storiesRepositoryMock: StoriesRepository
 
     private val dummyLoginResponse = DataDummy.generateDummyLoginResponse()
     private val dummyStory = DataDummy.generateDummyStoriesList()
@@ -119,6 +124,36 @@ class StoriesRepositoryTest {
             )
         }
 
+    }
+
+    @Test
+    fun `Get All Story with pager - result success`() = runTest() {
+        val expectedStory = MutableLiveData<PagingData<ListStoryItem>>()
+        expectedStory.value = data
+
+        `when`(
+            storiesRepositoryMock.getStories(
+                dummyToken
+            )
+        ).thenReturn(expectedStory)
+
+        val storyViewModel = StoryViewModel(storiesRepositoryMock)
+
+        val actualStory: PagingData<ListStoryItem> = storyViewModel.getAllStories(dummyToken).getOrAwaitValue()
+
+        val differ = AsyncPagingDataDiffer(
+            diffCallback = AdapterStory.DIFF_CALLBACK,
+            updateCallback = noopListUpdateCallback,
+            mainDispatcher = coroutinesTestRule.testDispatcher,
+            workerDispatcher = coroutinesTestRule.testDispatcher
+        )
+
+        differ.submitData(actualStory)
+
+        Assert.assertNotNull(actualStory)
+        Assert.assertEquals(
+            dummyStory, differ.snapshot()
+        )
     }
 
     @Test

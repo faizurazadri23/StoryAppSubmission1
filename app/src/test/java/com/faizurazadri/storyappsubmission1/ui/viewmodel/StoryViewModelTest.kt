@@ -69,7 +69,7 @@ class StoryViewModelTest {
         val expectedStory = MutableLiveData<ResultProcess<LoginResponse>>()
         expectedStory.value = ResultProcess.Success(dummyLoginResponse)
 
-        `when`(storyViewModel.login(dummyEmail, dummyPassword)).thenReturn(expectedStory)
+        `when`(storyRepository.login(dummyEmail, dummyPassword)).thenReturn(expectedStory)
 
         val actualLogin = storyViewModel.login(dummyEmail, dummyPassword).getOrAwaitValue()
         Mockito.verify(storyRepository).login(dummyEmail, dummyPassword)
@@ -85,7 +85,7 @@ class StoryViewModelTest {
         val expectedCreateAccount = MutableLiveData<ResultProcess<CreateAccountResponse>>()
         expectedCreateAccount.value = ResultProcess.Success(dummyCreateAccount)
 
-        `when`(storyViewModel.createdAccount(dummyName, dummyEmail, dummyPassword)).thenReturn(
+        `when`(storyRepository.createAccount(dummyName, dummyEmail, dummyPassword)).thenReturn(
             expectedCreateAccount
         )
 
@@ -105,7 +105,7 @@ class StoryViewModelTest {
         expectedAddNewStory.value = ResultProcess.Success(dummyAddNewStory)
 
         `when`(
-            storyViewModel.addNewStories(
+            storyRepository.addNewStory(
                 dummyToken,
                 dummyMultipart,
                 dummyDescription
